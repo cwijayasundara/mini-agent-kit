@@ -14,7 +14,7 @@
   "gates": [
     {
       "name": "tests",
-      "run": "python3 .factory/gates/tests.py",
+      "run": "python3 -B .factory/gates/tests.py",
       "timeoutSeconds": 900
     },
     {
@@ -29,17 +29,17 @@
     },
     {
       "name": "crap",
-      "run": "python3 .factory/gates/crap.py",
+      "run": "python3 -B .factory/gates/crap.py",
       "timeoutSeconds": 900
     },
     {
       "name": "dry",
-      "run": "python3 .factory/gates/dry.py",
+      "run": "python3 -B .factory/gates/dry.py",
       "timeoutSeconds": 300
     },
     {
       "name": "mutate",
-      "run": "python3 .factory/gates/mutate.py",
+      "run": "python3 -B .factory/gates/mutate.py",
       "timeoutSeconds": 3000
     }
   ],
@@ -60,5 +60,5 @@
     "dryer": "66ff6d21a42c04afcad89c78a80066176d1294b0",
     "mutator": "a5a0cb803b66e0cdb8bf471b3b08af701d424a41"
   },
-  "templateHash": "efe73d6b394e73414d5b7de388a1f185e613f5fda8fc459c2085ccd7b6677f35"
+  "templateHash": "76e7326607f1214a4fd825b46ae204e595a886fae9b6a1c656f276b42dbc0c80"
 }
