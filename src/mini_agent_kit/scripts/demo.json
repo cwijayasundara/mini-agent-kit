@@ -1,0 +1,19 @@
+{
+  "turns": [
+    {
+      "tool_calls": [
+        {"id": "c1", "name": "calculator", "arguments": {"expression": "17 * 23"}}
+      ]
+    },
+    {
+      "expect": {"c1": "391"},
+      "tool_calls": [
+        {"id": "c2", "name": "word_count", "arguments": {"text": "the quick brown fox"}}
+      ]
+    },
+    {
+      "expect": {"c2": "4"},
+      "final": "391; 4 words"
+    }
+  ]
+}

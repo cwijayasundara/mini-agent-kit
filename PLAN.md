@@ -27,8 +27,9 @@
   verify: uv run pytest -q tests/test_trace.py
   done: c909795
   after: 6
-- [ ] 8. Toy tools: calculator parser, word_count, clock
+- [x] 8. Toy tools: calculator parser, word_count, clock
   verify: uv run pytest -q tests/test_toys.py
+  done: 67281e3
   after: 4
 - [ ] 9. CLI demo and run commands with bundled demo.json
   verify: uv run pytest -q tests/test_cli.py

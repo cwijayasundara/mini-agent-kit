@@ -8,3 +8,4 @@
 - Calculator supports unary minus and uses Decimal (28 digits) so `0.1 + 0.2` prints `0.3` — spec silent on both — toys.py _Parser, _format
 - Calculator and clock failures raise ValueError; the registry reports them as `<name> failed: ...` — toys.py
 - The clock tool is built by `make_clock(now)` so tests inject the time; `clock` is the real-time instance — toys.py make_clock
+- The run output prints one `step N:` line per tool call; max_steps prints `stopped: max_steps reached without an answer`, error prints `error: <message>`, all to stdout — spec gives only the final-case format — cli.py render
