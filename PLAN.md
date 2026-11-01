@@ -35,9 +35,11 @@
   verify: uv run pytest -q tests/test_cli.py
   done: 606fcd9
   after: 7, 8
-- [ ] 10. README and all gates green
+- [x] 10. README and all gates green
   verify: grep -q "register" README.md && python3 -B .factory/gates/tests.py && python3 -B .factory/gates/crap.py && python3 -B .factory/gates/dry.py
+  done: 68d3780
   after: 9
-- [ ] 11. Demo prints the exact four lines
+- [x] 11. Demo prints the exact four lines
   verify: uv run mini-agent demo
+  done: 68d3780
   after: 10
