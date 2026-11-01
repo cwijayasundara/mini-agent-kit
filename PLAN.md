@@ -23,8 +23,9 @@
   verify: uv run pytest -q tests/test_agent.py
   done: ce55ac7
   after: 4, 5
-- [ ] 7. Run trace JSON round-trip
+- [x] 7. Run trace JSON round-trip
   verify: uv run pytest -q tests/test_trace.py
+  done: c909795
   after: 6
 - [ ] 8. Toy tools: calculator parser, word_count, clock
   verify: uv run pytest -q tests/test_toys.py

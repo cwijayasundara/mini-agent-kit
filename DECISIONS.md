@@ -5,3 +5,6 @@
 - `@registry.tool` is a bare decorator method (no parentheses form) — simplest reading of "@tool on a registry" — registry.py Registry.tool
 - A missing tool message for an `expect` id counts as a mismatch (actual shown as None) — spec silent — scripted.py ScriptedModel.complete
 - `run` takes an optional `clock` so durations are testable; `max_steps<=0` makes no model calls and returns max_steps — spec silent — agent.py run
+- Calculator supports unary minus and uses Decimal (28 digits) so `0.1 + 0.2` prints `0.3` — spec silent on both — toys.py _Parser, _format
+- Calculator and clock failures raise ValueError; the registry reports them as `<name> failed: ...` — toys.py
+- The clock tool is built by `make_clock(now)` so tests inject the time; `clock` is the real-time instance — toys.py make_clock
