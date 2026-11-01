@@ -19,8 +19,9 @@
   verify: uv run pytest -q tests/test_scripted.py
   done: 173a90b
   after: 1
-- [ ] 6. Agent loop run(): steps, max_steps, error stop reasons
+- [x] 6. Agent loop run(): steps, max_steps, error stop reasons
   verify: uv run pytest -q tests/test_agent.py
+  done: ce55ac7
   after: 4, 5
 - [ ] 7. Run trace JSON round-trip
   verify: uv run pytest -q tests/test_trace.py
