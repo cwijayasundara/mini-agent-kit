@@ -31,8 +31,9 @@
   verify: uv run pytest -q tests/test_toys.py
   done: 67281e3
   after: 4
-- [ ] 9. CLI demo and run commands with bundled demo.json
+- [x] 9. CLI demo and run commands with bundled demo.json
   verify: uv run pytest -q tests/test_cli.py
+  done: 606fcd9
   after: 7, 8
 - [ ] 10. README and all gates green
   verify: grep -q "register" README.md && python3 -B .factory/gates/tests.py && python3 -B .factory/gates/crap.py && python3 -B .factory/gates/dry.py
