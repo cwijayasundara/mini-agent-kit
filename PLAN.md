@@ -3,14 +3,17 @@
 - [x] 1. Project scaffold: pyproject (uv, dev deps, console script), package imports, shared message/reply/error types
   verify: uv run python -c "import mini_agent_kit.types" && uv run pytest -q tests/test_types.py
   done: f8c5395
-- [ ] 2. Tool registry: register/@tool, name, description, docstring required
+- [x] 2. Tool registry: register/@tool, name, description, docstring required
   verify: uv run pytest -q tests/test_registry_register.py
+  done: 926dab9
   after: 1
-- [ ] 3. Schema derivation from type hints (str,int,float,bool,list,Literal), TypeError on others, schemas() sorted
+- [x] 3. Schema derivation from type hints (str,int,float,bool,list,Literal), TypeError on others, schemas() sorted
   verify: uv run pytest -q tests/test_registry_schema.py
+  done: 926dab9
   after: 2
-- [ ] 4. registry.call validation and ToolError messages, bool not int
+- [x] 4. registry.call validation and ToolError messages, bool not int
   verify: uv run pytest -q tests/test_registry_call.py
+  done: 926dab9
   after: 3
 - [ ] 5. ScriptedModel: load, validate script, next turn, expect, ScriptMismatch, ScriptExhausted
   verify: uv run pytest -q tests/test_scripted.py

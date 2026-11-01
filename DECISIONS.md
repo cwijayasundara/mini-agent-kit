@@ -3,3 +3,4 @@
 - Validation order is missing, unexpected, then types, each in declaration/argument order — spec lists them in that order — registry.py _check
 - Wrong-type text names the schema type: `integer`, `array of integer`, `one of 'a', 'b'` — spec only says `<type>` — registry.py describe
 - `@registry.tool` is a bare decorator method (no parentheses form) — simplest reading of "@tool on a registry" — registry.py Registry.tool
+- A missing tool message for an `expect` id counts as a mismatch (actual shown as None) — spec silent — scripted.py ScriptedModel.complete
