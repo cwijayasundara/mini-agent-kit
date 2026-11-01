@@ -8,3 +8,8 @@ __pycache__/
 htmlcov/
 dist/
 *.egg-info/
+# build mode
+.factory/build-state.json
+.factory/hook-log.jsonl
+.metrics/
+target/
