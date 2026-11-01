@@ -25,7 +25,9 @@
       "Bash(git push * -f*)",
       "Bash(git rebase *)",
       "Bash(git reset --hard*)",
-      "Bash(git commit --amend*)"
+      "Bash(git commit --amend*)",
+      "Bash(git push *+*)",
+      "Bash(git reset *)"
     ]
   },
   "hooks": {
@@ -46,7 +48,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/build-gate.mjs\" stop",
+            "command": "r=\"$CLAUDE_PROJECT_DIR\"; d=$(mktemp -d) || exit 2; i=$(git -C \"$r\" log -1 --format=%H \"--grep=^chore: install build mode$\" -- .factory/build.json); if [ -z \"$i\" ] || ! git -C \"$r\" archive \"$i\" .claude/hooks | tar -x -C \"$d\"; then echo \"build mode: cannot load the Stop hook from the install commit\" >&2; rm -rf \"$d\"; exit 2; fi; node \"$d/.claude/hooks/build-gate.mjs\" stop; s=$?; rm -rf \"$d\"; if [ \"$s\" -ne 0 ]; then echo \"build mode: the Stop hook crashed (exit $s)\" >&2; exit 2; fi",
             "timeout": 6420
           }
         ]
