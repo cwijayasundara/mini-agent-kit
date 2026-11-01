@@ -15,8 +15,9 @@
   verify: uv run pytest -q tests/test_registry_call.py
   done: 926dab9
   after: 3
-- [ ] 5. ScriptedModel: load, validate script, next turn, expect, ScriptMismatch, ScriptExhausted
+- [x] 5. ScriptedModel: load, validate script, next turn, expect, ScriptMismatch, ScriptExhausted
   verify: uv run pytest -q tests/test_scripted.py
+  done: 173a90b
   after: 1
 - [ ] 6. Agent loop run(): steps, max_steps, error stop reasons
   verify: uv run pytest -q tests/test_agent.py
