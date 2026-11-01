@@ -1,0 +1,5 @@
+- Registering a duplicate tool name raises ValueError — spec silent; silent overwrite hides bugs — registry.py Registry.register
+- `*args`/`**kwargs`/unannotated parameters raise TypeError naming the parameter — they have no schema — registry.py _params
+- Validation order is missing, unexpected, then types, each in declaration/argument order — spec lists them in that order — registry.py _check
+- Wrong-type text names the schema type: `integer`, `array of integer`, `one of 'a', 'b'` — spec only says `<type>` — registry.py describe
+- `@registry.tool` is a bare decorator method (no parentheses form) — simplest reading of "@tool on a registry" — registry.py Registry.tool

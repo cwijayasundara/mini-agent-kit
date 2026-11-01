@@ -1,7 +1,8 @@
 # PLAN
 
-- [ ] 1. Project scaffold: pyproject (uv, dev deps, console script), package imports, shared message/reply/error types
+- [x] 1. Project scaffold: pyproject (uv, dev deps, console script), package imports, shared message/reply/error types
   verify: uv run python -c "import mini_agent_kit.types" && uv run pytest -q tests/test_types.py
+  done: f8c5395
 - [ ] 2. Tool registry: register/@tool, name, description, docstring required
   verify: uv run pytest -q tests/test_registry_register.py
   after: 1
