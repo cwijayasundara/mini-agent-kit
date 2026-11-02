@@ -10,7 +10,7 @@ State as of `9e2c12b` on `main`: all six gates and the demo pass, 167 tests, git
 ## Needs a decision before doing
 
 3. **Branch protection and AI PR review.** Everything goes straight to `main`. A PR flow needs: branch protection via `gh api` (admin rights), a review workflow using `REVIEW.md` (needs `ANTHROPIC_API_KEY` secret and billing). With one developer there is no second human for separation of duties.
-4. **Policy skills (security, compliance, UX).** They belong in `.claude/skills/`, which build mode protects. Add them, then re-run the installer: `cd ~/Documents/learning_102/lights_on_factory_v2.0 && node scripts/install-build-mode.ts <this repo> --demo "uv run mini-agent demo"` (needs a clean tree; it makes a `chore: install build mode` commit; push it afterwards or the Stop hook blocks on "commit and push").
+4. ~~Policy skills (security, compliance, UX).~~ Done (intent/005). Original note: They belong in `.claude/skills/`, which build mode protects. Add them, then re-run the installer: `cd ~/Documents/learning_102/lights_on_factory_v2.0 && node scripts/install-build-mode.ts <this repo> --demo "uv run mini-agent demo"` (needs a clean tree; it makes a `chore: install build mode` commit; push it afterwards or the Stop hook blocks on "commit and push").
 5. **Use the `shape` skill** (new in the installer) for the next feature: spec, glossary, decision records, acceptance examples. No `acceptance/` suite exists yet.
 
 ## Buildable now (items 6-9 done in 03415a0; see intent/003)

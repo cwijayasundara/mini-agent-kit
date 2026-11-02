@@ -272,7 +272,9 @@ def adopt_artifacts(repo: Path, name: str, owner: str) -> None:
     commit(repo, "docs: spec from intent 001")
     write(repo, "CLAUDE.md", CLAUDE.format(name=name))
     write(repo, "REVIEW.md", (KIT / "REVIEW.md").read_text())
-    commit(repo, "docs: CLAUDE.md and REVIEW.md")
+    for skill in sorted((KIT / ".claude/skills").glob("policy-*/SKILL.md")):
+        write(repo, f".claude/skills/{skill.parent.name}/SKILL.md", skill.read_text())
+    commit(repo, "docs: CLAUDE.md, REVIEW.md and policy skills")
 
 
 def install(repo: Path, demo: str) -> subprocess.CompletedProcess[str]:
@@ -315,11 +317,18 @@ def stage_plan_design(r: Report, repo: Path) -> None:
         "spec has acceptance examples",
         "## Acceptance examples" in (spec.read_text() if spec.exists() else ""),
     )
+    skills = sorted(
+        p.parent.name for p in (repo / ".claude/skills").glob("policy-*/SKILL.md")
+    )
+    enforced = all(
+        "## Enforced by" in (repo / f".claude/skills/{n}/SKILL.md").read_text()
+        for n in skills
+    )
     r.add(
         "2 design",
-        "policy skills (security/compliance/UX)",
-        None,
-        "none exist yet; pending item 4",
+        "policy skills committed, each naming its enforcement",
+        len(skills) >= 3 and enforced,
+        ", ".join(skills),
     )
 
 

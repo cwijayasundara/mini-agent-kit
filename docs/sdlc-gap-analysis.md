@@ -63,3 +63,7 @@ Findings from building it:
 - Harness finding (fixed in the factory): the Stop hook committed `chore: build complete, enter maintain` and never pushed it, so every build ended one commit ahead. It now pushes when the branch has an upstream; a live rerun showed ahead=0.
 - Harness finding (fixed in the factory): test-first was enforced only in fix mode. The Stop hook now blocks while a source-changing commit has no test commit at or after it (refactor/chore/docs/style are exempt; `testFirst: false` in build.json turns it off). It proves tests exist for the change, not that they were written first, and it is curable by adding a tests commit because history cannot be rewritten.
 - Observation: Haiku once rewrote production code "so the mutation gate has sites to test", which is the gate shaping the code. It was harmless here but worth watching.
+
+## Policy skills (stage 2)
+
+`policy-security`, `policy-compliance` and `policy-cli-ux` now exist under `.claude/skills/`, each with rules, an "Ask first" list and an "Enforced by" section. `tests/test_policy.py` is the hook behind the rules that must always hold (no dynamic execution or process imports, API key read only in `fireworks.py` and never interpolated, stdlib-only runtime, demo shape). Two rules have no mechanical check and say so: copied-code licensing and CLI style. Brand policy is not applicable (no UI). The rehearsal now verifies new repos receive the skills.
