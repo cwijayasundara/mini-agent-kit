@@ -1,0 +1,26 @@
+{
+  "question": "What is 84 / 7?",
+  "script": {
+    "turns": [
+      {
+        "tool_calls": [
+          {
+            "id": "c1",
+            "name": "calculator",
+            "arguments": {
+              "expression": "84 / 7"
+            }
+          }
+        ]
+      },
+      {
+        "expect": {
+          "c1": "12"
+        },
+        "final": "12"
+      }
+    ]
+  },
+  "answer": "12",
+  "stop_reason": "final"
+}

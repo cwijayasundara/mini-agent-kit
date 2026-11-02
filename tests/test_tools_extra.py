@@ -48,6 +48,7 @@ def test_metrics_from_a_small_repo(tmp_path: Path) -> None:
         "commits": 2,
         "fix_share": 0.5,
         "test_touch_share": 0.5,
+        "rework_share": 0.0,
         "plan_done_share": 0.5,
         "evals": 1,
         "live_evals": 0,
@@ -107,3 +108,23 @@ def test_fix_mode_guard(tmp_path: Path) -> None:
     assert "fix mode" in ask("tests/old.py")  # existing test blocked
     assert ask("tests/new.py") == ""  # new test allowed
     assert ask("src/code.py") == ""  # code allowed
+
+
+def test_rework_share_counts_overlapping_files(tmp_path: Path) -> None:
+    metrics = _load("metrics")
+    _git(tmp_path, "init", "-q")
+    for i, name in enumerate(["a", "b", "a", "c"]):
+        (tmp_path / f"{name}.txt").write_text(str(i))
+        _git(tmp_path, "add", "-A")
+        _git(tmp_path, "commit", "-qm", f"commit {i}")
+    assert metrics.rework_share(tmp_path) == pytest.approx(
+        1 / 3
+    )  # only the second edit of a.txt
+
+
+def test_ci_pass_share_is_none_without_gh(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    metrics = _load("metrics")
+    monkeypatch.setenv("PATH", "/nonexistent")
+    assert metrics.ci_pass_share(tmp_path) is None

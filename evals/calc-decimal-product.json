@@ -1,0 +1,26 @@
+{
+  "question": "What is 1.5 * 4?",
+  "script": {
+    "turns": [
+      {
+        "tool_calls": [
+          {
+            "id": "c1",
+            "name": "calculator",
+            "arguments": {
+              "expression": "1.5 * 4"
+            }
+          }
+        ]
+      },
+      {
+        "expect": {
+          "c1": "6"
+        },
+        "final": "6"
+      }
+    ]
+  },
+  "answer": "6",
+  "stop_reason": "final"
+}

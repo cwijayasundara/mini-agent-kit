@@ -1,0 +1,34 @@
+{
+  "question": "Two things at once",
+  "script": {
+    "turns": [
+      {
+        "tool_calls": [
+          {
+            "id": "a",
+            "name": "calculator",
+            "arguments": {
+              "expression": "6 * 7"
+            }
+          },
+          {
+            "id": "b",
+            "name": "word_count",
+            "arguments": {
+              "text": "x y"
+            }
+          }
+        ]
+      },
+      {
+        "expect": {
+          "a": "42",
+          "b": "2"
+        },
+        "final": "42 and 2"
+      }
+    ]
+  },
+  "answer": "42 and 2",
+  "stop_reason": "final"
+}

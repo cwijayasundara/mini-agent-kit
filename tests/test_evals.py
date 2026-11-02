@@ -16,7 +16,7 @@ CASES = sorted((Path(__file__).resolve().parent.parent / "evals").glob("*.json")
 
 
 def test_there_are_evals() -> None:
-    assert len(CASES) >= 5
+    assert len(CASES) >= 20
 
 
 @pytest.mark.parametrize("case", CASES, ids=lambda p: p.stem)

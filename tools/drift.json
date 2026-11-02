@@ -1,0 +1,9 @@
+{
+  "window": 5,
+  "min_baseline": 5,
+  "tiers": [
+    {"name": "log", "rate": 0.2, "delta": 0.1, "action": "print the rates"},
+    {"name": "diagnose", "rate": 0.4, "delta": 0.25, "action": "print each recent finding; read-only"},
+    {"name": "propose", "rate": 0.6, "delta": 0.4, "action": "write intent files for the recent problem traces"}
+  ]
+}

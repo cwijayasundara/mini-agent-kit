@@ -1,0 +1,27 @@
+{
+  "question": "Call with extra arg",
+  "script": {
+    "turns": [
+      {
+        "tool_calls": [
+          {
+            "id": "c1",
+            "name": "word_count",
+            "arguments": {
+              "text": "a",
+              "extra": 1
+            }
+          }
+        ]
+      },
+      {
+        "expect": {
+          "c1": "error: unexpected argument: extra"
+        },
+        "final": "extra"
+      }
+    ]
+  },
+  "answer": "extra",
+  "stop_reason": "final"
+}

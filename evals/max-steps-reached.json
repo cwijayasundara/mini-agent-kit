@@ -1,0 +1,97 @@
+{
+  "question": "Loop forever",
+  "script": {
+    "turns": [
+      {
+        "tool_calls": [
+          {
+            "id": "c0",
+            "name": "word_count",
+            "arguments": {
+              "text": "0"
+            }
+          }
+        ]
+      },
+      {
+        "tool_calls": [
+          {
+            "id": "c1",
+            "name": "word_count",
+            "arguments": {
+              "text": "1"
+            }
+          }
+        ]
+      },
+      {
+        "tool_calls": [
+          {
+            "id": "c2",
+            "name": "word_count",
+            "arguments": {
+              "text": "2"
+            }
+          }
+        ]
+      },
+      {
+        "tool_calls": [
+          {
+            "id": "c3",
+            "name": "word_count",
+            "arguments": {
+              "text": "3"
+            }
+          }
+        ]
+      },
+      {
+        "tool_calls": [
+          {
+            "id": "c4",
+            "name": "word_count",
+            "arguments": {
+              "text": "4"
+            }
+          }
+        ]
+      },
+      {
+        "tool_calls": [
+          {
+            "id": "c5",
+            "name": "word_count",
+            "arguments": {
+              "text": "5"
+            }
+          }
+        ]
+      },
+      {
+        "tool_calls": [
+          {
+            "id": "c6",
+            "name": "word_count",
+            "arguments": {
+              "text": "6"
+            }
+          }
+        ]
+      },
+      {
+        "tool_calls": [
+          {
+            "id": "c7",
+            "name": "word_count",
+            "arguments": {
+              "text": "7"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "answer": null,
+  "stop_reason": "max_steps"
+}

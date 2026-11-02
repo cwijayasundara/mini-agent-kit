@@ -1,0 +1,26 @@
+{
+  "question": "What is 7 / 2?",
+  "script": {
+    "turns": [
+      {
+        "tool_calls": [
+          {
+            "id": "c1",
+            "name": "calculator",
+            "arguments": {
+              "expression": "7 / 2"
+            }
+          }
+        ]
+      },
+      {
+        "expect": {
+          "c1": "3.5"
+        },
+        "final": "3.5"
+      }
+    ]
+  },
+  "answer": "3.5",
+  "stop_reason": "final"
+}

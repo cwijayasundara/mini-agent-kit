@@ -1,0 +1,26 @@
+{
+  "question": "What is ((1 + 2) * (3 + 4)) - 5?",
+  "script": {
+    "turns": [
+      {
+        "tool_calls": [
+          {
+            "id": "c1",
+            "name": "calculator",
+            "arguments": {
+              "expression": "((1 + 2) * (3 + 4)) - 5"
+            }
+          }
+        ]
+      },
+      {
+        "expect": {
+          "c1": "16"
+        },
+        "final": "16"
+      }
+    ]
+  },
+  "answer": "16",
+  "stop_reason": "final"
+}

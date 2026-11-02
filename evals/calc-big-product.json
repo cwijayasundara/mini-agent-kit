@@ -1,0 +1,26 @@
+{
+  "question": "What is 123456 * 789?",
+  "script": {
+    "turns": [
+      {
+        "tool_calls": [
+          {
+            "id": "c1",
+            "name": "calculator",
+            "arguments": {
+              "expression": "123456 * 789"
+            }
+          }
+        ]
+      },
+      {
+        "expect": {
+          "c1": "97406784"
+        },
+        "final": "97406784"
+      }
+    ]
+  },
+  "answer": "97406784",
+  "stop_reason": "final"
+}

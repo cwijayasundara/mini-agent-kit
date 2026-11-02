@@ -5,6 +5,7 @@ Reports: commits, share that are fixes, share of commits touching tests, plan ta
 and eval counts. A rising fix share or falling plan completion is a signal to improve a guide.
 """
 
+import json
 import re
 import subprocess
 import sys
@@ -15,6 +16,41 @@ def _git(repo: Path, *args: str) -> str:
     return subprocess.run(
         ["git", *args], cwd=repo, capture_output=True, text=True, check=True
     ).stdout
+
+
+REWORK_LOOKBACK = 3
+
+
+def rework_share(repo: Path) -> float:
+    """Share of commits (after the first) touching a file changed in one of the 3 commits before."""
+    shas = _git(repo, "log", "--reverse", "--format=%H").split()
+    touched = [
+        set(_git(repo, "show", "--name-only", "--format=", s).split()) for s in shas
+    ]
+    if len(touched) < 2:
+        return 0.0
+    hits = sum(
+        1
+        for i in range(1, len(touched))
+        if touched[i] & set().union(*touched[max(0, i - REWORK_LOOKBACK) : i])
+    )
+    return hits / (len(touched) - 1)
+
+
+def ci_pass_share(repo: Path) -> float | None:
+    """Share of recent GitHub Actions runs that passed, or None when gh is unavailable."""
+    try:
+        out = subprocess.run(
+            ["gh", "run", "list", "--limit", "30", "--json", "conclusion"],
+            cwd=repo,
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout
+    except (OSError, subprocess.CalledProcessError):
+        return None
+    runs = [r["conclusion"] for r in json.loads(out) if r["conclusion"]]
+    return runs.count("success") / len(runs) if runs else None
 
 
 def collect(repo: Path) -> dict[str, float]:
@@ -37,6 +73,7 @@ def collect(repo: Path) -> dict[str, float]:
         "commits": commits,
         "fix_share": fixes / commits if commits else 0.0,
         "test_touch_share": with_tests / commits if commits else 0.0,
+        "rework_share": rework_share(repo),
         "plan_done_share": done / total if total else 0.0,
         "evals": len(list((repo / "evals").glob("*.json"))),
         "live_evals": len(list((repo / "evals" / "live").glob("*.json"))),
@@ -44,7 +81,10 @@ def collect(repo: Path) -> dict[str, float]:
 
 
 def main(argv: list[str]) -> int:
-    for name, value in collect(Path(argv[0]) if argv else Path(".")).items():
+    repo = Path(argv[0]) if argv else Path(".")
+    ci = ci_pass_share(repo)
+    print(f"ci_pass_share: {ci:.2f}" if ci is not None else "ci_pass_share: n/a")
+    for name, value in collect(repo).items():
         print(
             f"{name}: {value:.2f}" if isinstance(value, float) else f"{name}: {value}"
         )

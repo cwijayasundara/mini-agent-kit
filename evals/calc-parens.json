@@ -1,0 +1,26 @@
+{
+  "question": "What is (2 + 3) * 4?",
+  "script": {
+    "turns": [
+      {
+        "tool_calls": [
+          {
+            "id": "c1",
+            "name": "calculator",
+            "arguments": {
+              "expression": "(2 + 3) * 4"
+            }
+          }
+        ]
+      },
+      {
+        "expect": {
+          "c1": "20"
+        },
+        "final": "20"
+      }
+    ]
+  },
+  "answer": "20",
+  "stop_reason": "final"
+}

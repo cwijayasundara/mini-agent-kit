@@ -1,0 +1,26 @@
+{
+  "question": "Count words",
+  "script": {
+    "turns": [
+      {
+        "tool_calls": [
+          {
+            "id": "c1",
+            "name": "word_count",
+            "arguments": {
+              "text": "  a   b  c "
+            }
+          }
+        ]
+      },
+      {
+        "expect": {
+          "c1": "3"
+        },
+        "final": "3 words"
+      }
+    ]
+  },
+  "answer": "3 words",
+  "stop_reason": "final"
+}
