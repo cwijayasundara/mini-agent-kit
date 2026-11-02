@@ -79,6 +79,7 @@
   verify: uv run python -c "import ast,pathlib;ast.parse(pathlib.Path('tools/sdlc_live.py').read_text())"
   done: da03948
   after: 19
-- [ ] 21. Policy skills and policy tests (intent/005)
+- [x] 21. Policy skills and policy tests (intent/005)
   verify: uv run pytest -q tests/test_policy.py
+  done: 352a15d
   after: 20

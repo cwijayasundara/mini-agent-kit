@@ -96,10 +96,10 @@ def test_runtime_has_no_third_party_dependencies() -> None:
 
 
 def test_demo_output_is_the_four_spec_lines() -> None:
-    from mini_agent_kit.cli import main
-
     import contextlib
     import io
+
+    from mini_agent_kit.cli import main
 
     out = io.StringIO()
     with contextlib.redirect_stdout(out):
