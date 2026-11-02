@@ -1,0 +1,7 @@
+# Code owner approval is required by branch protection. Guard configuration needs the owner explicitly.
+*                       @cwijayasundara
+/.claude/               @cwijayasundara
+/.factory/              @cwijayasundara
+/.github/               @cwijayasundara
+/SPEC.md                @cwijayasundara
+/REVIEW.md              @cwijayasundara

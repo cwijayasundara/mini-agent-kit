@@ -131,3 +131,32 @@ def test_policy_skill_exists_with_frontmatter_and_enforcement_section(
 def test_claude_md_points_at_the_policy_skills() -> None:
     text = (ROOT / "CLAUDE.md").read_text()
     assert all(name in text for name in POLICIES), "list the policy skills in CLAUDE.md"
+
+
+def test_ai_review_workflow_is_safe_and_cheap() -> None:
+    lines = (ROOT / ".github/workflows/ai-review.yml").read_text().splitlines()
+    text = "\n".join(
+        line.split(" # ")[0] for line in lines if not line.lstrip().startswith("#")
+    )
+    assert "pull_request_target" not in text, (
+        "policy-security: fork PRs must never receive secrets"
+    )
+    assert re.search(r"claude-code-action@[0-9a-f]{40}", "\n".join(lines)), (
+        "policy-security: pin the action to a commit SHA"
+    )
+    assert "opus" not in text.lower(), (
+        "policy-compliance: the reviewer runs on Sonnet, not Opus (cost)"
+    )
+    assert "contents: write" not in text and "id-token" not in text, (
+        "policy-security: the reviewer may only read and comment"
+    )
+    assert (
+        "--allowedTools" in text and "Write" not in text.split("--allowedTools")[1]
+    ), "the reviewer may not edit files"
+    assert "REVIEW.md" in text, "the review follows REVIEW.md"
+
+
+def test_codeowners_covers_the_guards() -> None:
+    owners = (ROOT / ".github/CODEOWNERS").read_text()
+    for path in ("/.claude/", "/.factory/", "/.github/", "/SPEC.md"):
+        assert path in owners, f"policy-security: CODEOWNERS must cover {path}"
