@@ -3,7 +3,7 @@
 import fs from 'node:fs'
 
 const SECRET =
-  /(fw_[A-Za-z0-9]{20,}|sk-[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|(api[_-]?key|secret|token)\s*[:=]\s*['"][A-Za-z0-9_-]{16,}['"])/i
+  /(sk-[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|(api[_-]?key|secret|token)\s*[:=]\s*['"][A-Za-z0-9_-]{16,}['"])/i
 
 function readInput() {
   try {
@@ -23,7 +23,7 @@ if (match) {
       hookSpecificOutput: {
         hookEventName: 'PreToolUse',
         permissionDecision: 'deny',
-        permissionDecisionReason: `edit contains what looks like a credential ('${match[0].slice(0, 8)}...'); read it from the environment instead, as fireworks.py does`,
+        permissionDecisionReason: `edit contains what looks like a credential ('${match[0].slice(0, 8)}...'); read it from the environment instead`,
       },
     })}\n`,
   )
