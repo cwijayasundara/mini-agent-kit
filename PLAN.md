@@ -87,6 +87,7 @@
   verify: uv run pytest -q tests/test_policy.py
   done: b008fda
   after: 21
-- [ ] 23. Branch protection and AI PR review (intent/006)
+- [x] 23. Branch protection and AI PR review (intent/006)
   verify: uv run pytest -q tests/test_policy.py
+  done: 7377d00
   after: 22
