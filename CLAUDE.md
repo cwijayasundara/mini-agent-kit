@@ -43,3 +43,4 @@ Add a line here (and to LESSONS.md) whenever a correction repeats. Keep this fil
 - CI also runs gitleaks (full history) and semgrep; run them locally with `gitleaks detect` and `uvx semgrep scan --config p/python --config p/secrets src tools tests`.
 - `tools/sdlc_rehearsal.py [greenfield|brownfield|kit|all|all-gates]`: rehearses the six SDLC stages on throwaway repos with the real hooks and gates (no CI, no model). Run it after changing hooks, gates or the factory installer. `all-gates` runs the full Stop hook (~20s).
 - `tools/sdlc_live.py`: costs money (~$0.15): Haiku builds, Sonnet grades a tiny project under build mode. Opus is refused. Run after harness changes, not on every edit.
+- Policy skills in `.claude/skills/`: `policy-security`, `policy-compliance`, `policy-cli-ux`. Each lists its rules, an "Ask first" list and what enforces it (`tests/test_policy.py` and the hooks). Read the matching one before touching that area.

@@ -1,0 +1,133 @@
+"""Policy tests: the rules in the policy skills that must always hold, enforced mechanically.
+
+The skills under .claude/skills/policy-* are advisory; these tests are the hook behind them.
+"""
+
+import ast
+import re
+from pathlib import Path
+
+import pytest
+
+ROOT = Path(__file__).resolve().parent.parent
+PKG = ROOT / "src" / "mini_agent_kit"
+SKILLS = ROOT / ".claude" / "skills"
+POLICIES = ("policy-security", "policy-compliance", "policy-cli-ux")
+FORBIDDEN_CALLS = {"eval", "exec", "compile", "__import__"}
+FORBIDDEN_IMPORTS = {"subprocess", "pickle", "marshal", "shelve", "ctypes"}
+
+
+def _trees() -> dict[str, ast.Module]:
+    return {p.name: ast.parse(p.read_text()) for p in sorted(PKG.glob("*.py"))}
+
+
+def test_no_dynamic_code_execution_in_runtime() -> None:
+    bad = [
+        f"{name}:{node.lineno} {node.func.id}()"
+        for name, tree in _trees().items()
+        for node in ast.walk(tree)
+        if isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Name)
+        and node.func.id in FORBIDDEN_CALLS
+    ]
+    assert bad == [], f"policy-security: remove dynamic execution: {bad}"
+
+
+def test_no_process_or_unsafe_deserialization_imports_in_runtime() -> None:
+    bad = []
+    for name, tree in _trees().items():
+        for node in ast.walk(tree):
+            mods = (
+                [a.name for a in node.names]
+                if isinstance(node, ast.Import)
+                else [node.module or ""]
+                if isinstance(node, ast.ImportFrom)
+                else []
+            )
+            bad += [
+                f"{name}:{node.lineno} {m}"
+                for m in mods
+                if m.split(".")[0] in FORBIDDEN_IMPORTS
+            ]
+    assert bad == [], f"policy-security: runtime may not import these: {bad}"
+
+
+def test_api_key_is_only_read_in_fireworks_and_never_formatted_into_text() -> None:
+    readers = [n for n, t in _trees().items() if "FIREWORKS_API_KEY" in ast.unparse(t)]
+    assert readers == ["fireworks.py"], (
+        f"policy-security: key read outside fireworks.py: {readers}"
+    )
+    tree = _trees()["fireworks.py"]
+    leaks = [
+        node.lineno
+        for node in ast.walk(tree)
+        if isinstance(node, ast.JoinedStr)
+        and ast.unparse(node) != "f'Bearer {api_key}'"  # the one Authorization header
+        and any(
+            isinstance(v, ast.FormattedValue)
+            and re.search(r"\b(key|api_key)\b", ast.unparse(v.value))
+            for v in node.values
+        )
+    ]
+    assert leaks == [], (
+        f"policy-security: key interpolated into a string at lines {leaks}"
+    )
+
+
+def test_runtime_has_no_third_party_dependencies() -> None:
+    import sys
+
+    allowed = set(sys.stdlib_module_names) | {"mini_agent_kit"}
+    bad = []
+    for name, tree in _trees().items():
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Import):
+                mods = [a.name for a in node.names]
+            elif isinstance(node, ast.ImportFrom) and node.level == 0:
+                mods = [node.module or ""]
+            else:
+                continue
+            bad += [
+                f"{name}:{node.lineno} {m}"
+                for m in mods
+                if m.split(".")[0] not in allowed
+            ]
+    assert bad == [], f"policy-compliance: runtime must stay stdlib-only: {bad}"
+
+
+def test_demo_output_is_the_four_spec_lines() -> None:
+    from mini_agent_kit.cli import main
+
+    import contextlib
+    import io
+
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        assert main(["demo"]) == 0
+    lines = out.getvalue().splitlines()
+    assert lines[0].startswith("question: ") and lines[-1].startswith("answer: "), (
+        "policy-cli-ux: the demo keeps its question: / step N: / answer: shape"
+    )
+
+
+@pytest.mark.parametrize("name", POLICIES)
+def test_policy_skill_exists_with_frontmatter_and_enforcement_section(
+    name: str,
+) -> None:
+    path = SKILLS / name / "SKILL.md"
+    assert path.exists(), (
+        f"add {path.relative_to(ROOT)} (see docs/sdlc-gap-analysis.md, stage 2)"
+    )
+    text = path.read_text()
+    head = text.split("---")[1] if text.startswith("---") else ""
+    assert f"name: {name}" in head and "description:" in head, (
+        f"{name}: frontmatter needs name and description"
+    )
+    assert "## Enforced by" in text, (
+        f"{name}: say which test or hook backs each rule, under '## Enforced by'"
+    )
+
+
+def test_claude_md_points_at_the_policy_skills() -> None:
+    text = (ROOT / "CLAUDE.md").read_text()
+    assert all(name in text for name in POLICIES), "list the policy skills in CLAUDE.md"
