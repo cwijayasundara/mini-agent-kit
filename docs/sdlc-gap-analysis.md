@@ -34,3 +34,22 @@ Compares mini-agent-kit's harness (as of install commit `92f4e74`) with the stag
 5. **Maintain loop.** Baseline and tiers exist; save real traces and schedule `drift.py`.
 6. **Remaining metrics.** Plan-to-diff drift and time-to-merge.
 7. **Policy skills and a `shape` pass** for the next feature.
+
+## Local rehearsal (greenfield and brownfield)
+
+`uv run python tools/sdlc_rehearsal.py all-gates` builds two throwaway repos, installs build mode with the factory installer and drives every guard with the JSON the harness sends. Result: 0 failed, with skips only for GitHub-dependent and policy checks.
+
+| Stage | Greenfield | Brownfield | Notes |
+|---|---|---|---|
+| 1 Plan | pass | pass | intent sections, author and timestamp, accepted status |
+| 2 Design | pass (policy skills SKIP) | pass (policy skills SKIP) | spec committed with acceptance examples |
+| 3 Build | pass | pass | protect-paths, secret-guard, CLAUDE.md length, plan committed; Stop hook blocks on open task and on missing report |
+| 4 Test | pass (evals SKIP) | pass | fix-mode guard; brownfield baseline shows the expected lint debt |
+| 5 Deploy | partial | partial | REVIEW.md and deny rules checked; branch protection, AI PR review and rollback SKIP |
+| 6 Maintain | pass | n/a | full Stop hook allows, phase flips to maintain, protected edit still blocked; drift tiers and maintain loop pass in the `kit` scenario |
+
+Findings from building it:
+- The factory template ships only `protect-paths` and the Stop hook. `secret-guard`, `fix-mode-guard` and `post-edit-check` are kit-local, so a new repo does not get them unless copied. The rehearsal applies them as an overlay; folding them into the factory template would remove the manual step.
+- Brownfield install preserves existing hooks, history and `.gitignore`. Legacy lint debt fails the lint gate, so the Stop hook cannot pass until a cleanup task or a ratchet exists.
+- The Stop hook demands the last plan task verify with the demo command exactly, and the mutation gate fails with "ran no mutants" on code without branching logic.
+- Not proven: a model following the process end to end. That needs a live agent run in the temp repos.

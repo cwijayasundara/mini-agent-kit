@@ -13,7 +13,7 @@ State as of `9e2c12b` on `main`: all six gates and the demo pass, 167 tests, git
 4. **Policy skills (security, compliance, UX).** They belong in `.claude/skills/`, which build mode protects. Add them, then re-run the installer: `cd ~/Documents/learning_102/lights_on_factory_v2.0 && node scripts/install-build-mode.ts <this repo> --demo "uv run mini-agent demo"` (needs a clean tree; it makes a `chore: install build mode` commit; push it afterwards or the Stop hook blocks on "commit and push").
 5. **Use the `shape` skill** (new in the installer) for the next feature: spec, glossary, decision records, acceptance examples. No `acceptance/` suite exists yet.
 
-## Buildable now
+## Buildable now (items 6-9 done in 03415a0; see intent/003)
 
 6. **Save real traces and schedule `tools/drift.py`.** Use `tools/traced_run.py` to write to `traces/` (gitignored). `drift.py` needs 5 recent plus 5 baseline traces before it acts. Decide where traces live in CI (artifact upload) and add a scheduled job.
 7. **Metrics still missing:** plan-to-diff drift, time-to-merge (only meaningful with PRs), DORA measures.
@@ -27,3 +27,6 @@ State as of `9e2c12b` on `main`: all six gates and the demo pass, 167 tests, git
 - Protected paths (do not edit): `.claude/`, `.factory/build.json`, `.factory/gates/`, `SPEC.md`. Editing them without re-running the installer makes the Stop hook block.
 - Bug-fix flow: `touch .fix-mode`, add a new failing test, fix the code, `rm .fix-mode`.
 - Open question never answered: should the kit become a harness for other agents (tool risk levels, approval hooks), or only be well harnessed itself?
+
+## Added after the local rehearsal
+- `tools/sdlc_rehearsal.py` (intent/004) passes on greenfield, brownfield and kit scenarios. Still open: fold the kit-local hooks into the factory template; run a live-model pass in the temp repos; policy skills, branch protection and rollback (items 3 and 4).

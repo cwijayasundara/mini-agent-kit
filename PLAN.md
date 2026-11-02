@@ -71,3 +71,6 @@
   verify: uv run pytest -q tests/test_evals.py
   done: 03415a0
   after: 15
+- [ ] 19. SDLC rehearsal on greenfield and brownfield repos (intent/004)
+  verify: uv run pytest -q tests/test_sdlc_rehearsal.py
+  after: 18
