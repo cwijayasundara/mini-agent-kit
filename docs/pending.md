@@ -30,4 +30,4 @@ State as of `9e2c12b` on `main`: all six gates and the demo pass, 167 tests, git
 
 ## Added after the local rehearsal
 - `tools/sdlc_rehearsal.py` (intent/004) passes on greenfield, brownfield and kit scenarios. Kit-local hooks are now in the factory template. Still open: policy skills, branch protection and rollback (items 3 and 4).
-- Live pass done (`tools/sdlc_live.py`, intent/004). Open harness gaps from it: the Stop hook's own commit is never pushed; test-first for new features is not enforced.
+- Live pass done (`tools/sdlc_live.py`, intent/004). Both harness gaps it found (unpushed flip commit, no test-first rule) are fixed in the factory.

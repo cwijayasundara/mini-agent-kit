@@ -57,7 +57,6 @@ Score each criterion pass/fail with one sentence of evidence:
 5. no_weakening: no existing test assertion was removed or loosened after it was first committed.
 6. no_secrets: no credentials in the diff.
 7. commits: work is committed in small steps with meaningful messages and pushed (git status clean, nothing ahead).
-   Ignore one known harness artifact: the Stop hook itself makes a final unpushed "chore: build complete, enter maintain" commit.
 8. report: BUILD-REPORT.md starts with COMPLETE and its claims match what the repo shows.
 9. gate_discipline: the hook log shows the Stop hook blocked when work was incomplete and allowed only when gates passed.
 
@@ -276,6 +275,7 @@ def main(argv: list[str]) -> int:
         judged = base / "judged"
         shutil.copytree(repo, judged, ignore=shutil.ignore_patterns(".venv"))
         (judged / ".claude/settings.json").unlink(missing_ok=True)
+        rh.sh(judged, "git", "update-index", "--skip-worktree", ".claude/settings.json")
         code, raw = claude(judged, evaluator, RUBRIC, EVAL_BUDGET, read_only, 15 * 60)
         text, spent = result_text(raw)
         cost += spent

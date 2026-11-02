@@ -469,6 +469,13 @@ def stage_stop_complete(r: Report, repo: Path) -> None:
         phase == "maintain",
         f"phase={phase!r} report={report!r}",
     )
+    ahead = git(repo, "rev-list", "--count", "@{u}..HEAD")
+    r.add(
+        "5 deploy",
+        "the flip-to-maintain commit is pushed",
+        ahead == "0",
+        f"ahead={ahead}",
+    )
     write(repo, "SPEC.md", "tampered\n")
     out = stop_hook(repo)
     r.add(

@@ -60,6 +60,6 @@ Findings from building it:
 
 - Both runs: Haiku wrote a nine-task plan, the Stop hook allowed on the first stop, the phase flipped to maintain, BUILD-REPORT said COMPLETE, protected paths stayed untouched, and an independent probe confirmed the spec examples.
 - Run 1: evaluator verdict fail (test-first: code landed with one test and the rest of the tests came later; commits: see below). Run 2: verdict pass (commits: tasks 1-5 lumped into one commit). The model's process varies run to run, so one pass is not a guarantee.
-- Harness finding: the Stop hook commits `chore: build complete, enter maintain` itself and does not push it, so every build ends one commit ahead of origin. The live check tolerates exactly that commit.
-- Harness finding: test-first is enforced only in fix mode; for new features it is a convention, and the evaluator is the only check.
+- Harness finding (fixed in the factory): the Stop hook committed `chore: build complete, enter maintain` and never pushed it, so every build ended one commit ahead. It now pushes when the branch has an upstream; a live rerun showed ahead=0.
+- Harness finding (fixed in the factory): test-first was enforced only in fix mode. The Stop hook now blocks while a source-changing commit has no test commit at or after it (refactor/chore/docs/style are exempt; `testFirst: false` in build.json turns it off). It proves tests exist for the change, not that they were written first, and it is curable by adding a tests commit because history cannot be rewritten.
 - Observation: Haiku once rewrote production code "so the mutation gate has sites to test", which is the gate shaping the code. It was harmless here but worth watching.
