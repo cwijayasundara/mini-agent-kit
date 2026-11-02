@@ -9,7 +9,7 @@ State as of `9e2c12b` on `main`: all six gates and the demo pass, 167 tests, git
 
 ## Needs a decision before doing
 
-3. **Branch protection and AI PR review.** Everything goes straight to `main`. A PR flow needs: branch protection via `gh api` (admin rights), a review workflow using `REVIEW.md` (needs `ANTHROPIC_API_KEY` secret and billing). With one developer there is no second human for separation of duties.
+3. ~~Branch protection and AI PR review.~~ Set up (intent/006); owner must add the `ANTHROPIC_API_KEY` secret, see below. Original note: Everything goes straight to `main`. A PR flow needs: branch protection via `gh api` (admin rights), a review workflow using `REVIEW.md` (needs `ANTHROPIC_API_KEY` secret and billing). With one developer there is no second human for separation of duties.
 4. ~~Policy skills (security, compliance, UX).~~ Done (intent/005). Original note: They belong in `.claude/skills/`, which build mode protects. Add them, then re-run the installer: `cd ~/Documents/learning_102/lights_on_factory_v2.0 && node scripts/install-build-mode.ts <this repo> --demo "uv run mini-agent demo"` (needs a clean tree; it makes a `chore: install build mode` commit; push it afterwards or the Stop hook blocks on "commit and push").
 5. **Use the `shape` skill** (new in the installer) for the next feature: spec, glossary, decision records, acceptance examples. No `acceptance/` suite exists yet.
 
@@ -31,3 +31,9 @@ State as of `9e2c12b` on `main`: all six gates and the demo pass, 167 tests, git
 ## Added after the local rehearsal
 - `tools/sdlc_rehearsal.py` (intent/004) passes on greenfield, brownfield and kit scenarios. Kit-local hooks are now in the factory template. Still open: policy skills, branch protection and rollback (items 3 and 4).
 - Live pass done (`tools/sdlc_live.py`, intent/004). Both harness gaps it found (unpushed flip commit, no test-first rule) are fixed in the factory.
+
+## Branch protection and AI review (intent/006)
+- `main` is protected: PR required, 1 code-owner approval (CODEOWNERS), `verify` and `security` checks, resolved conversations, linear history, no force push or deletion. Admin bypass is ON, so the owner (and any agent using the owner's token) can still push directly. Real separation of duties needs a second identity.
+- To turn the AI review on: `gh secret set ANTHROPIC_API_KEY` (run it yourself with `! gh secret set ANTHROPIC_API_KEY`; do not paste the key into a session). Until then the `ai-review` job skips with a notice.
+- Neither is exercised yet: CI is billing-locked, so `verify`/`security` never report and the review never ran. Open a test PR after the lock is lifted.
+- Rollback is still not applicable (library).
