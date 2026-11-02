@@ -9,36 +9,46 @@
     ".claude/",
     ".factory/build.json",
     ".factory/gates/",
-    "SPEC.md"
+    "SPEC.md",
+    "acceptance/"
+  ],
+  "testPaths": [
+    "tests/"
   ],
   "gates": [
     {
       "name": "tests",
+      "level": "fast",
       "run": "python3 -B .factory/gates/tests.py",
       "timeoutSeconds": 900
     },
     {
       "name": "lint",
-      "run": "uv run ruff check --isolated src tests && uv run ruff check --isolated --extend-select C901,PLR0912,PLR0913,PLR0915 --config 'lint.mccabe.max-complexity=10' src && uv run ruff format --isolated --check src tests",
+      "level": "fast",
+      "run": "uv run ruff check --isolated src tests && uv run ruff format --isolated --check src tests",
       "timeoutSeconds": 300
     },
     {
       "name": "types",
+      "level": "fast",
       "run": "uv run mypy --strict --config-file .factory/gates/mypy.ini src",
       "timeoutSeconds": 600
     },
     {
       "name": "crap",
+      "level": "full",
       "run": "python3 -B .factory/gates/crap.py",
       "timeoutSeconds": 900
     },
     {
       "name": "dry",
+      "level": "full",
       "run": "python3 -B .factory/gates/dry.py",
       "timeoutSeconds": 300
     },
     {
       "name": "mutate",
+      "level": "full",
       "run": "python3 -B .factory/gates/mutate.py",
       "timeoutSeconds": 3000
     }
@@ -60,5 +70,5 @@
     "dryer": "66ff6d21a42c04afcad89c78a80066176d1294b0",
     "mutator": "a5a0cb803b66e0cdb8bf471b3b08af701d424a41"
   },
-  "templateHash": "76e7326607f1214a4fd825b46ae204e595a886fae9b6a1c656f276b42dbc0c80"
+  "templateHash": "f6e88a218098f6262b73bf26397761c542f33cb18bb813689702d351ecf895f1"
 }

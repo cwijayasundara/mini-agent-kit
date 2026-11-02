@@ -15,3 +15,5 @@ dist/
 target/
 traces/
 .fix-mode
+# build mode
+.factory/runs/

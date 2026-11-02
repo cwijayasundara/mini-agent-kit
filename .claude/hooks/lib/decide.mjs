@@ -9,6 +9,7 @@ export function decide(ctx) {
   const stalled = guard(ctx, tasks)
   if (stalled) return stalled
   if (ctx.protectedDiff) return block(`restore the protected files; they must match the install commit:\n${ctx.protectedDiff}`)
+  if (ctx.weakened) return block(`restore the assertions removed or loosened in existing tests; add new tests instead:\n${ctx.weakened}`)
   if (!ctx.plan) return block('write PLAN.md from SPEC.md')
   if (!ctx.plan.ok) return block(`fix PLAN.md: ${ctx.plan.errors.map(e => `line ${e.line}: ${e.message}`).join('; ')}`)
   if (!ctx.lock.ok) return block(`restore the plan: ${ctx.lock.problems.join('; ')}`)
@@ -30,6 +31,14 @@ export function decide(ctx) {
   const failed = ctx.runGates({ skipDemo: partial && demoMissing }).find(gate => !gate.ok)
   if (failed) return block(`gate ${failed.name} failed; fix it and keep going:\n${failed.tail}`)
   return { kind: 'allow', header }
+}
+
+// Maintain phase: the operator is at the keyboard. No clock, no plan, no report; protected files and fast gates only.
+export function decideMaintain(ctx) {
+  if (ctx.protectedDiff) return block(`restore the protected files; they must match the install commit:\n${ctx.protectedDiff}`)
+  const failed = ctx.runGates().find(gate => !gate.ok)
+  if (failed) return block(`gate ${failed.name} failed; fix it and keep going:\n${failed.tail}`)
+  return { kind: 'allow', header: 'MAINTAIN' }
 }
 
 function guard(ctx, tasks) {
