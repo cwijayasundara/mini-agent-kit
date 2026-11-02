@@ -1,0 +1,26 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "0 6 * * 1" # weekly: catches drift and runs the maintain loop
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync
+      - run: uv run pytest -q
+      - run: uv run ruff check --isolated src tests
+      - run: uv run ruff check --isolated --extend-select C901,PLR0912,PLR0913,PLR0915 --config 'lint.mccabe.max-complexity=10' src
+      - run: uv run ruff format --isolated --check src tests
+      - run: uv run mypy --strict --config-file .factory/gates/mypy.ini src
+      - run: uv run mini-agent demo
+      - name: trace sensor on a demo trace
+        run: |
+          uv run mini-agent run --script src/mini_agent_kit/scripts/demo.json --trace demo-trace.json "demo"
+          uv run python tools/trace_sensor.py demo-trace.json
