@@ -75,3 +75,6 @@
   verify: uv run pytest -q tests/test_sdlc_rehearsal.py
   done: 7ba4edf
   after: 18
+- [ ] 20. Live SDLC pass with a cheap builder and a stronger evaluator (intent/004)
+  verify: uv run python -c "import ast,pathlib;ast.parse(pathlib.Path('tools/sdlc_live.py').read_text())"
+  after: 19

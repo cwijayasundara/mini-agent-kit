@@ -29,4 +29,5 @@ State as of `9e2c12b` on `main`: all six gates and the demo pass, 167 tests, git
 - Open question never answered: should the kit become a harness for other agents (tool risk levels, approval hooks), or only be well harnessed itself?
 
 ## Added after the local rehearsal
-- `tools/sdlc_rehearsal.py` (intent/004) passes on greenfield, brownfield and kit scenarios. Kit-local hooks are now in the factory template. Still open: run a live-model pass in the temp repos; policy skills, branch protection and rollback (items 3 and 4).
+- `tools/sdlc_rehearsal.py` (intent/004) passes on greenfield, brownfield and kit scenarios. Kit-local hooks are now in the factory template. Still open: policy skills, branch protection and rollback (items 3 and 4).
+- Live pass done (`tools/sdlc_live.py`, intent/004). Open harness gaps from it: the Stop hook's own commit is never pushed; test-first for new features is not enforced.

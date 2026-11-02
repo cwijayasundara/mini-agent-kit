@@ -53,3 +53,13 @@ Findings from building it:
 - Brownfield install preserves existing hooks, history and `.gitignore`. Legacy lint debt fails the lint gate, so the Stop hook cannot pass until a cleanup task or a ratchet exists.
 - The Stop hook demands the last plan task verify with the demo command exactly, and the mutation gate fails with "ran no mutants" on code without branching logic.
 - Not proven: a model following the process end to end. That needs a live agent run in the temp repos.
+
+## Live pass (haiku-5-5 builds, sonnet-5-5 grades; no Opus)
+
+`uv run python tools/sdlc_live.py` seeds an accepted intent and spec for `slugify`, installs build mode, lets Haiku build under the Stop hook, runs deterministic checks, then has Sonnet grade a nine-point rubric. Two runs, about $0.11 and $0.13 each:
+
+- Both runs: Haiku wrote a nine-task plan, the Stop hook allowed on the first stop, the phase flipped to maintain, BUILD-REPORT said COMPLETE, protected paths stayed untouched, and an independent probe confirmed the spec examples.
+- Run 1: evaluator verdict fail (test-first: code landed with one test and the rest of the tests came later; commits: see below). Run 2: verdict pass (commits: tasks 1-5 lumped into one commit). The model's process varies run to run, so one pass is not a guarantee.
+- Harness finding: the Stop hook commits `chore: build complete, enter maintain` itself and does not push it, so every build ends one commit ahead of origin. The live check tolerates exactly that commit.
+- Harness finding: test-first is enforced only in fix mode; for new features it is a convention, and the evaluator is the only check.
+- Observation: Haiku once rewrote production code "so the mutation gate has sites to test", which is the gate shaping the code. It was harmless here but worth watching.
