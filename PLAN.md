@@ -59,12 +59,15 @@
   verify: uv run pytest -q tests/test_drift.py
   done: 9e2c12b
   after: 14
-- [ ] 16. Eval-derived trace set and weekly drift job (intent/003)
+- [x] 16. Eval-derived trace set and weekly drift job (intent/003)
   verify: uv run pytest -q tests/test_eval_traces.py
+  done: 03415a0
   after: 15
-- [ ] 17. DORA-style metrics and plan-to-diff drift (intent/003)
+- [x] 17. DORA-style metrics and plan-to-diff drift (intent/003)
   verify: uv run pytest -q tests/test_metrics.py
+  done: 03415a0
   after: 15
-- [ ] 18. Evals for model-failure stops and bool-vs-string arguments
+- [x] 18. Evals for model-failure stops and bool-vs-string arguments
   verify: uv run pytest -q tests/test_evals.py
+  done: 03415a0
   after: 15
