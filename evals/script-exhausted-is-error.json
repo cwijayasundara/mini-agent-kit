@@ -1,0 +1,20 @@
+{
+  "question": "Go",
+  "script": {
+    "turns": [
+      {
+        "tool_calls": [
+          {
+            "id": "c1",
+            "name": "word_count",
+            "arguments": {
+              "text": "a b"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "answer": null,
+  "stop_reason": "error"
+}

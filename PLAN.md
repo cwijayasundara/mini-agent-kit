@@ -43,3 +43,28 @@
   verify: uv run mini-agent demo
   done: 68d3780
   after: 10
+- [x] 12. Opt-in Fireworks provider, `demo --live` and `live` (intent/001)
+  verify: uv run pytest -q tests/test_fireworks.py
+  done: a1aecc0
+  after: 11
+- [x] 13. Eval suite and traced-run wrapper (intent/002)
+  verify: uv run pytest -q tests/test_evals.py
+  done: 5b8b3af
+  after: 12
+- [x] 14. Live evals, metrics and fix-mode guard (intent/002)
+  verify: uv run pytest -q tests/test_evals.py tests/test_metrics.py
+  done: da88328
+  after: 13
+- [x] 15. More evals, security scans in CI, drift tiers, rework metric (intent/002)
+  verify: uv run pytest -q tests/test_drift.py
+  done: 9e2c12b
+  after: 14
+- [ ] 16. Eval-derived trace set and weekly drift job (intent/003)
+  verify: uv run pytest -q tests/test_eval_traces.py
+  after: 15
+- [ ] 17. DORA-style metrics and plan-to-diff drift (intent/003)
+  verify: uv run pytest -q tests/test_metrics.py
+  after: 15
+- [ ] 18. Evals for model-failure stops and bool-vs-string arguments
+  verify: uv run pytest -q tests/test_evals.py
+  after: 15

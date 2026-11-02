@@ -3,6 +3,7 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
   schedule:
     - cron: "0 6 * * 1" # weekly: catches drift and runs the maintain loop
 permissions:
@@ -37,3 +38,18 @@ jobs:
           ./gitleaks detect --no-banner --redact
       - name: semgrep
         run: uvx semgrep scan --config p/python --config p/secrets --quiet --metrics=off --error src tools tests
+  drift:
+    # Weekly: regenerate traces from the offline evals, run the drift detector, keep the traces.
+    # Exit 1 (tier "log") is expected because some evals exercise failures on purpose; tier 2+ fails the job.
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync
+      - run: uv run python tools/eval_traces.py evals traces-ci
+      - run: uv run python tools/drift.py traces-ci || [ $? -lt 2 ]
+      - uses: actions/upload-artifact@v4
+        with:
+          name: traces
+          path: traces-ci/

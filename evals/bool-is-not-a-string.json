@@ -1,0 +1,26 @@
+{
+  "question": "Bool arg",
+  "script": {
+    "turns": [
+      {
+        "tool_calls": [
+          {
+            "id": "c1",
+            "name": "word_count",
+            "arguments": {
+              "text": true
+            }
+          }
+        ]
+      },
+      {
+        "expect": {
+          "c1": "error: text: expected string"
+        },
+        "final": "rejected"
+      }
+    ]
+  },
+  "answer": "rejected",
+  "stop_reason": "final"
+}

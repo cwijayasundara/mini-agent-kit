@@ -49,6 +49,8 @@ def test_metrics_from_a_small_repo(tmp_path: Path) -> None:
         "fix_share": 0.5,
         "test_touch_share": 0.5,
         "rework_share": 0.0,
+        "plan_drift": 1.0,
+        "deploys_per_week": 2.0,
         "plan_done_share": 0.5,
         "evals": 1,
         "live_evals": 0,

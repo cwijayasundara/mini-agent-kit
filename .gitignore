@@ -17,3 +17,4 @@ traces/
 .fix-mode
 # build mode
 .factory/runs/
+traces-ci/
