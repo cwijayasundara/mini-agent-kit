@@ -78,3 +78,11 @@ def test_command_is_required() -> None:
     with pytest.raises(SystemExit) as info:
         main([])
     assert info.value.code == 2
+
+
+def test_live_without_key_exits_2(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    monkeypatch.delenv("FIREWORKS_API_KEY", raising=False)
+    assert main(["demo", "--live"]) == 2
+    assert "FIREWORKS_API_KEY" in capsys.readouterr().out

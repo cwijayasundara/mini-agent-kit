@@ -7,6 +7,8 @@ from importlib import resources
 from pathlib import Path
 
 from mini_agent_kit.agent import run
+from mini_agent_kit.fireworks import FireworksError, FireworksModel
+from mini_agent_kit.model import Model
 from mini_agent_kit.scripted import ScriptedModel
 from mini_agent_kit.toys import toy_registry
 from mini_agent_kit.trace import RunResult
@@ -32,8 +34,8 @@ def render(question: str, result: RunResult) -> str:
     return "\n".join(lines)
 
 
-def _execute(script: Path, question: str, trace: str | None) -> int:
-    result = run(question, ScriptedModel.from_file(script), toy_registry())
+def _execute(model: Model, question: str, trace: str | None) -> int:
+    result = run(question, model, toy_registry())
     print(render(question, result))
     if trace is not None:
         Path(trace).write_text(result.to_json())
@@ -43,7 +45,13 @@ def _execute(script: Path, question: str, trace: str | None) -> int:
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="mini-agent")
     commands = parser.add_subparsers(dest="command", required=True)
-    commands.add_parser("demo", help="run the bundled demo script")
+    demo_cmd = commands.add_parser("demo", help="run the bundled demo script")
+    demo_cmd.add_argument(
+        "--live", action="store_true", help="plan with Fireworks instead of the script"
+    )
+    live_cmd = commands.add_parser("live", help="ask the Fireworks model a question")
+    live_cmd.add_argument("--trace", help="write the run trace JSON here")
+    live_cmd.add_argument("question")
     run_cmd = commands.add_parser("run", help="run a script with the toy tools")
     run_cmd.add_argument("--script", required=True, type=Path)
     run_cmd.add_argument("--trace", help="write the run trace JSON here")
@@ -51,10 +59,23 @@ def _parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _live(question: str, trace: str | None) -> int:
+    try:
+        model: Model = FireworksModel()
+    except FireworksError as exc:
+        print(f"error: {exc}")
+        return EXIT_CODES["error"]
+    return _execute(model, question, trace)
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     args = _parser().parse_args(argv)
+    if args.command == "live":
+        return _live(args.question, args.trace)
     if args.command == "demo":
+        if args.live:
+            return _live(DEMO_QUESTION, None)
         demo = resources.files("mini_agent_kit") / "scripts" / "demo.json"
         with resources.as_file(demo) as path:
-            return _execute(path, DEMO_QUESTION, None)
-    return _execute(args.script, args.question, args.trace)
+            return _execute(ScriptedModel.from_file(path), DEMO_QUESTION, None)
+    return _execute(ScriptedModel.from_file(args.script), args.question, args.trace)

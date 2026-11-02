@@ -4,7 +4,7 @@ Status: approved spec. Built unattended by the lights-on factory's build mode.
 
 ## Purpose
 
-An offline toolkit for building tool-using agents. You register plain Python functions as tools, then run an agent loop against a model. The kit ships a scripted fake model, so every run is deterministic, needs no network or API keys, and can be tested end to end. A real provider can be added later by implementing one small protocol.
+An offline toolkit for building tool-using agents. You register plain Python functions as tools, then run an agent loop against a model. The kit ships a scripted fake model, so every run is deterministic, needs no network or API keys, and can be tested end to end. A real provider can be added by implementing one small protocol; an optional Fireworks AI provider ships as `FireworksModel`.
 
 ## Stack
 
@@ -30,7 +30,9 @@ An offline toolkit for building tool-using agents. You register plain Python fun
 
 ```python
 class Model(Protocol):
-    def complete(self, messages: list[Message], tools: list[ToolSchema]) -> ModelReply: ...
+    def complete(
+        self, messages: list[Message], tools: list[ToolSchema]
+    ) -> ModelReply: ...
 ```
 
 - A `ModelReply` is exactly one of: a final text answer, or a non-empty list of tool calls. A tool call has `id: str`, `name: str` and `arguments: dict[str, object]`.
@@ -77,7 +79,7 @@ answer: 391; 4 words
 
 ## Out of scope
 
-Real model providers, streaming, async, parallel tool calls, memory between runs, and any network access.
+Streaming, async, memory between runs, and any network access except the opt-in Fireworks provider (`demo --live`, `live`), which is never used by tests or by the default commands. The Fireworks provider reads `FIREWORKS_API_KEY` and defaults to `accounts/fireworks/models/glm-5p3-flash`.
 
 ## Done means
 
