@@ -13,3 +13,4 @@ dist/
 .factory/hook-log.jsonl
 .metrics/
 target/
+traces/

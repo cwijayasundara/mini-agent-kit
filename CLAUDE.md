@@ -35,3 +35,5 @@ Add a line here (and to LESSONS.md) whenever a correction repeats. Keep this fil
 - `intent/`: start new work as `intent/NNN-name.md`, then SPEC → PLAN → code.
 - `LESSONS.md`: log each recurring failure with the guide or sensor added.
 - `tools/trace_sensor.py <trace.json>`: flags loops, tool errors and abnormal stops in a `--trace` file. Run it on traces from `mini-agent run --trace`.
+- `evals/*.json`: end-to-end regression cases run by `tests/test_evals.py`. Add one for every bug or incident.
+- `tools/traced_run.py` saves a trace to `traces/`; `tools/maintain.py traces` turns problem traces into `intent/` files.

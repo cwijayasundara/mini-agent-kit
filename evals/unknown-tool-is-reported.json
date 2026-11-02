@@ -1,0 +1,24 @@
+{
+  "question": "Use a missing tool",
+  "script": {
+    "turns": [
+      {
+        "tool_calls": [
+          {
+            "id": "c1",
+            "name": "nope",
+            "arguments": {}
+          }
+        ]
+      },
+      {
+        "expect": {
+          "c1": "error: unknown tool: nope"
+        },
+        "final": "no such tool"
+      }
+    ]
+  },
+  "answer": "no such tool",
+  "stop_reason": "final"
+}

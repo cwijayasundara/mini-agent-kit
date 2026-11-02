@@ -1,0 +1,26 @@
+{
+  "question": "What is 1/0?",
+  "script": {
+    "turns": [
+      {
+        "tool_calls": [
+          {
+            "id": "c1",
+            "name": "calculator",
+            "arguments": {
+              "expression": "1/0"
+            }
+          }
+        ]
+      },
+      {
+        "expect": {
+          "c1": "error: calculator failed: division by zero"
+        },
+        "final": "cannot divide by zero"
+      }
+    ]
+  },
+  "answer": "cannot divide by zero",
+  "stop_reason": "final"
+}
