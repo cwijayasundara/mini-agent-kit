@@ -49,7 +49,7 @@ Compares mini-agent-kit's harness (as of install commit `92f4e74`) with the stag
 | 6 Maintain | pass | n/a | full Stop hook allows, phase flips to maintain, protected edit still blocked; drift tiers and maintain loop pass in the `kit` scenario |
 
 Findings from building it:
-- The factory template ships only `protect-paths` and the Stop hook. `secret-guard`, `fix-mode-guard` and `post-edit-check` are kit-local, so a new repo does not get them unless copied. The rehearsal applies them as an overlay; folding them into the factory template would remove the manual step.
+- The factory template ships only `protect-paths` and the Stop hook. `secret-guard`, `fix-mode-guard` and `post-edit-check` are kit-local, so a new repo does not get them unless copied. Fixed: the factory template now ships all three (and git-ignores `.fix-mode`), and the rehearsal relies on the template alone.
 - Brownfield install preserves existing hooks, history and `.gitignore`. Legacy lint debt fails the lint gate, so the Stop hook cannot pass until a cleanup task or a ratchet exists.
 - The Stop hook demands the last plan task verify with the demo command exactly, and the mutation gate fails with "ran no mutants" on code without branching logic.
 - Not proven: a model following the process end to end. That needs a live agent run in the temp repos.

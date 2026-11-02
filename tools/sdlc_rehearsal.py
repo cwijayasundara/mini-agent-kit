@@ -275,22 +275,6 @@ def adopt_artifacts(repo: Path, name: str, owner: str) -> None:
     commit(repo, "docs: CLAUDE.md and REVIEW.md")
 
 
-def overlay_kit_guards(repo: Path) -> None:
-    """Copy the kit's own guards (not in the factory template) and wire them into settings.json."""
-    for name in ("secret-guard.mjs", "fix-mode-guard.mjs", "post-edit-check.mjs"):
-        write(repo, f".claude/hooks/{name}", (KIT / ".claude/hooks" / name).read_text())
-    path = repo / ".claude/settings.json"
-    settings = json.loads(path.read_text()) if path.exists() else {}
-    kit = json.loads((KIT / ".claude/settings.json").read_text())["hooks"]
-    ours = ("secret-guard", "fix-mode-guard", "post-edit-check")
-    for event, groups in kit.items():
-        for group in groups:
-            if any(o in h["command"] for h in group["hooks"] for o in ours):
-                settings.setdefault("hooks", {}).setdefault(event, []).append(group)
-    write(repo, ".claude/settings.json", json.dumps(settings, indent=2) + "\n")
-    commit(repo, "chore: kit guards (secret, fix-mode, post-edit)")
-
-
 def install(repo: Path, demo: str) -> subprocess.CompletedProcess[str]:
     return sh(
         KIT,
@@ -513,7 +497,6 @@ def greenfield(base: Path, full: bool) -> Report:
     sh(repo, "uv", "lock")
     commit(repo, "chore: lockfile")
     stage_plan_design(r, repo)
-    overlay_kit_guards(repo)
     installed = install(repo, demo)
     stage_build(r, repo, installed)
     if installed.returncode == 0:
@@ -565,7 +548,6 @@ def brownfield(base: Path) -> Report:
     write(repo, "PLAN.md", PLAN_OPEN.format(task="clean up legacy module", demo=demo))
     commit(repo, "docs: adoption plan")
     stage_plan_design(r, repo)
-    overlay_kit_guards(repo)
     installed = install(repo, demo)
     stage_build(r, repo, installed)
     if installed.returncode == 0:
