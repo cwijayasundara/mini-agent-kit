@@ -1,0 +1,4 @@
+{
+  "question": "How many words are in 'the quick brown fox jumps'? Use the word_count tool.",
+  "contains": "5"
+}

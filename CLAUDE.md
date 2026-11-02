@@ -37,3 +37,5 @@ Add a line here (and to LESSONS.md) whenever a correction repeats. Keep this fil
 - `tools/trace_sensor.py <trace.json>`: flags loops, tool errors and abnormal stops in a `--trace` file. Run it on traces from `mini-agent run --trace`.
 - `evals/*.json`: end-to-end regression cases run by `tests/test_evals.py`. Add one for every bug or incident.
 - `tools/traced_run.py` saves a trace to `traces/`; `tools/maintain.py traces` turns problem traces into `intent/` files.
+- Bug fix flow: `touch .fix-mode`, write a new failing test, fix the code, then `rm .fix-mode`. While it exists, existing tests/evals cannot be edited (hook).
+- `tools/live_evals.py`: opt-in evals against the real model (needs FIREWORKS_API_KEY); `tools/metrics.py`: fix share, test-touch share, plan completion.

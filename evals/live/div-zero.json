@@ -1,0 +1,5 @@
+{
+  "question": "What is 5 / 0? Use the calculator tool and tell me what happened.",
+  "contains": "zero",
+  "allow_tool_errors": true
+}
