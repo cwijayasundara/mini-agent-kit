@@ -83,3 +83,6 @@
   verify: uv run pytest -q tests/test_policy.py
   done: 352a15d
   after: 20
+- [ ] 22. Live brownfield SDLC pass (intent/004)
+  verify: uv run pytest -q tests/test_policy.py
+  after: 21

@@ -67,3 +67,9 @@ Findings from building it:
 ## Policy skills (stage 2)
 
 `policy-security`, `policy-compliance` and `policy-cli-ux` now exist under `.claude/skills/`, each with rules, an "Ask first" list and an "Enforced by" section. `tests/test_policy.py` is the hook behind the rules that must always hold (no dynamic execution or process imports, API key read only in `fireworks.py` and never interpolated, stdlib-only runtime, demo shape). Two rules have no mechanical check and say so: copied-code licensing and CLI style. Brand policy is not applicable (no UI). The rehearsal now verifies new repos receive the skills.
+
+## Live brownfield pass
+
+`uv run python tools/sdlc_live.py brownfield` seeds an existing repo (history by another author, a team hook, a `slugify` bug, lint and type debt, existing tests), installs build mode and lets Haiku fix the bug under the Stop hook; Sonnet grades ten criteria. One run, $0.11, 12 deterministic checks and 10 rubric criteria all passed. The builder wrote a failing regression test first, fixed the bug with a one-line change, cleaned the debt in three separate `refactor:` commits, left `shout` and the original tests alone, and the Stop hook allowed on the first stop. The new test was shown to fail against the original buggy `slug.py`. Repo kept at `~/Documents/learning_102/sdlc-live-demos/brownfield-*/brownfield`.
+
+Still not covered: GitHub-side stage 5 (branch protection, AI PR review, release authorization, rollback), real incidents feeding the maintain loop on these repos, plan mode, worktrees and subagents, and anything beyond a trivial codebase. One passing run is not a guarantee; the builder varies run to run.
